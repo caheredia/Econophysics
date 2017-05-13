@@ -1,0 +1,159 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Project1_Returns</title><meta name="generator" content="MATLAB 8.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2013-01-18"><meta name="DC.source" content="Project1_Returns.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%READ CSV FILE</span>
+<span class="comment">%This creates a matrix without the headings</span>
+clear, clc
+str = <span class="string">'SWISX'</span>;
+fileID = fopen([str <span class="string">'.csv'</span>]);
+C = textscan(fileID, <span class="string">'%s%*f%*f%*f%f%*f%*f'</span>,<span class="string">'HeaderLines'</span>,1,<span class="string">'Delimiter'</span>,<span class="string">','</span>);
+fclose(fileID);
+
+date = C{1,1}; <span class="comment">%First cell contains dates</span>
+date_format= <span class="string">'yyyy-mm-dd'</span>;  <span class="comment">%used to convert to datenum</span>
+date=datenum(date,date_format);
+
+
+closing = C{1,2}; <span class="comment">%Second cell contains closing values</span>
+
+date=flipud(date); <span class="comment">%reverse the order of date</span>
+closing=flipud(closing); <span class="comment">%reverse the order of date</span>
+
+
+
+
+<span class="comment">%need first date in date array: date_1=date(1,1)</span>
+<span class="comment">% give the number of elements in array numel(date, :, 1)</span>
+
+delta_t = 21;
+<span class="comment">%Define returns function. This For function steps through the date array</span>
+<span class="comment">% and performs the returns alogoithm, saving it to an array called Returns</span>
+<span class="keyword">for</span> m = delta_t:numel(date, :, 1)
+    Returns(m) = (closing(m)-closing(m-delta_t+1))/closing(m-delta_t+1)*100;
+<span class="keyword">end</span>
+
+drawdown=min(Returns(:)) <span class="comment">% returns the minimum value in array:</span>
+
+plot(date, Returns)
+title([<span class="string">'Trailing Returns '</span> str <span class="string">', Drawdown ='</span> num2str(drawdown) <span class="string">',delta t = '</span> num2str(delta_t)])
+ylabel(<span class="string">'%'</span>)
+xlabel(<span class="string">'Date'</span>)
+datetick(<span class="string">'x'</span>,<span class="string">'mm/dd/yyyy'</span>, <span class="string">'keepticks'</span>)
+hold
+axis ([min(date(:)) max(date(:)) min(Returns(:)) max(Returns(:))])
+</pre><pre class="codeoutput">
+drawdown =
+
+  -33.2094
+
+Current plot held
+</pre><img vspace="5" hspace="5" src="Project1_Returns_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2012b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%READ CSV FILE
+%This creates a matrix without the headings 
+clear, clc
+str = 'SWISX';
+fileID = fopen([str '.csv']);
+C = textscan(fileID, '%s%*f%*f%*f%f%*f%*f','HeaderLines',1,'Delimiter',',');
+fclose(fileID);
+
+date = C{1,1}; %First cell contains dates
+date_format= 'yyyy-mm-dd';  %used to convert to datenum 
+date=datenum(date,date_format);
+
+
+closing = C{1,2}; %Second cell contains closing values
+
+date=flipud(date); %reverse the order of date
+closing=flipud(closing); %reverse the order of date
+
+
+
+
+%need first date in date array: date_1=date(1,1)
+% give the number of elements in array numel(date, :, 1)
+
+delta_t = 21;
+%Define returns function. This For function steps through the date array
+% and performs the returns alogoithm, saving it to an array called Returns
+for m = delta_t:numel(date, :, 1)
+    Returns(m) = (closing(m)-closing(m-delta_t+1))/closing(m-delta_t+1)*100;
+end     
+
+drawdown=min(Returns(:)) % returns the minimum value in array: 
+
+plot(date, Returns)
+title(['Trailing Returns ' str ', Drawdown =' num2str(drawdown) ',delta t = ' num2str(delta_t)])
+ylabel('%')
+xlabel('Date')
+datetick('x','mm/dd/yyyy', 'keepticks')
+hold
+axis ([min(date(:)) max(date(:)) min(Returns(:)) max(Returns(:))])
+
+
+##### SOURCE END #####
+--></body></html>
